@@ -3,8 +3,6 @@ import * as jwt from 'jsonwebtoken';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Patient } from '../Entities/patient'
-import * as bcrypt from 'bcryptjs';
-
 
 @Injectable()
 export class PatientService {
@@ -72,6 +70,7 @@ export class PatientService {
     // Password matches
     return true;
   }
+
 
 
 

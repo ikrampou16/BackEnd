@@ -1,23 +1,4 @@
 {
-
-  "name": "backend",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ikrampou16/BackEnd.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ikrampou16/BackEnd/issues"
-  },
-  "homepage": "https://github.com/ikrampou16/BackEnd#readme",
-  "description": "",
-
   "name": "api",
   "version": "0.0.1",
   "description": "",
@@ -46,7 +27,6 @@
     "@nestjs/swagger": "^7.3.0",
     "@nestjs/typeorm": "^10.0.2",
     "bcrypt": "^5.1.1",
-    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
@@ -94,5 +74,4 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }
-
 }

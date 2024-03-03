@@ -1,5 +1,5 @@
 {
-<<<<<<< HEAD
+
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
@@ -16,8 +16,8 @@
     "url": "https://github.com/ikrampou16/BackEnd/issues"
   },
   "homepage": "https://github.com/ikrampou16/BackEnd#readme",
-  "description": ""
-=======
+  "description": "",
+
   "name": "api",
   "version": "0.0.1",
   "description": "",
@@ -94,5 +94,5 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }
->>>>>>> fbb87fc8131162f19b42fb8230e448cba2b85195
+
 }

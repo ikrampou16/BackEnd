@@ -1,5 +1,7 @@
-import { Controller, Post, Body, Res, HttpStatus, HttpException , Get } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, HttpException, Get, Req, UseGuards } from '@nestjs/common';
 import { PatientService } from '../Services/patient.service';
+import { AuthGuard } from '@nestjs/passport';
+import { ExtractJwt } from 'passport-jwt';
 
 @Controller('patients')
 export class PatientController {
@@ -71,5 +73,31 @@ export class PatientController {
       }
     }
   }
+  @Post('logout')
+  @UseGuards(AuthGuard('jwt'))
+  async logout(@Req() req, @Res() res): Promise<any> {
+    try {
+      console.log('Entering logout route');
+      const authenticatedUserId = req.user.userId; // Adjust based on your payload structure
 
+      // Extract patient ID from the token
+      const patientIdInToken = this.patientService.extractPatientIdFromToken(req.headers.authorization);
+
+      // Check if the user ID in the token matches the authenticated user ID
+      if (authenticatedUserId !== patientIdInToken) {
+        throw new HttpException('Unauthorized. Token does not correspond to the authenticated patient.', HttpStatus.UNAUTHORIZED);
+      }
+
+      // Optionally, you might want to perform some additional validation here
+
+      // Log the patient out (add your logout logic here)
+
+      // Return success response
+      return res.status(HttpStatus.OK).json({ status: true, message: 'Logout successful' });
+    } catch (error) {
+      console.error('Error during logout:', error); // Log the error for debugging
+      throw new HttpException('Error during logout.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+  
 }

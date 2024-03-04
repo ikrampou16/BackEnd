@@ -24,7 +24,7 @@ export class Admin {
 
   @Column()
   role: string;
-
+  //this is remove password
   toJSON() {
     const { password, ...rest } = this;
     return rest;

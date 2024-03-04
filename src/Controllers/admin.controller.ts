@@ -2,9 +2,14 @@ import { Controller, Post, Body, Res, HttpStatus, HttpException , Get} from '@ne
 
 import { AdminService } from '../Services/admin.service';
 
+import { AdminRepository } from '../repositories/admin.repository';
+
+
+
 @Controller('admins')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  
+  constructor(private readonly adminService: AdminService ) {}
   
   @Post('register')
   async createAdmin(@Body() body: any, @Res() res): Promise<any> {
@@ -36,7 +41,7 @@ export class AdminController {
     }
   }
 
-  @Get('login')
+  @Post('login')
   async loginAdmin(@Body() body: any, @Res() res): Promise<any> {
     try {
       const { email, password } = body;
@@ -61,7 +66,7 @@ export class AdminController {
       const tokenData = { _id: admin.id, email: admin.email };
       const token = await this.adminService.generateAccessToken(tokenData, "secret", "1h");
 
-      res.status(HttpStatus.OK).json({ status: true, success: "Connected!", token, last_name: admin.last_name });
+      res.status(HttpStatus.OK).json({ status: true, success: "Connected!", token, data :admin });
     } catch (error) {
       console.error('Error:', error);
       if (error instanceof HttpException) {
@@ -71,6 +76,18 @@ export class AdminController {
       }
     }
   }
+// @Get(':id')
+//     async getAdminById(id: string):  Promise<any> {
+//         try {
+//             const admin = await this.adminService.findOne({ where: { id } });
+//             if (!admin) {
+//               throw new HttpException('admin not found', HttpStatus.NOT_FOUND);
+//             }
+//             return admin;
+//         } catch (err) {
+//           console.log(err);
+//           return undefined; 
+//         }
+//     }
 
-
-}
+ }

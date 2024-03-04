@@ -36,7 +36,7 @@ export class PatientController {
     }
   }
 
-  @Get('login')
+  @Post('login')
   async loginPatient(@Body() body: any, @Res() res): Promise<any> {
     try {
       const { email, password } = body;
@@ -61,7 +61,7 @@ export class PatientController {
       const tokenData = { _id: patient.id_patient, email: patient.email };
       const token = await this.patientService.generateAccessToken(tokenData, "secret", "1h");
 
-      res.status(HttpStatus.OK).json({ status: true, success: "Connected!", token, last_name: patient.last_name });
+      res.status(HttpStatus.OK).json({ status: true, success: "Connected!", token, data :patient});
     } catch (error) {
       console.error('Error:', error);
       if (error instanceof HttpException) {

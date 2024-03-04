@@ -25,6 +25,11 @@ export class Admin {
   @Column()
   role: string;
 
+  toJSON() {
+    const { password, ...rest } = this;
+    return rest;
+}
+
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {

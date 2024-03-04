@@ -83,17 +83,4 @@ export class PatientService {
     }
   }
 
-  extractPatientIdFromToken(token: string): string {
-    try {
-      // Decode the token to get the payload
-      const decodedToken: any = jwt.decode(token);
-      console.log('Decoded Token:', decodedToken);
-
-      // Extract and return the user ID from the payload
-      return decodedToken._id;
-    } catch (error) {
-      throw new HttpException('Error extracting user ID from token.', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
 }

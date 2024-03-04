@@ -74,29 +74,28 @@ export class PatientController {
     }
   }
   @Post('logout')
-  @UseGuards(AuthGuard('jwt'))
-  async logout(@Req() req, @Res() res): Promise<any> {
+  async logout(@Body() body: any, @Res() res): Promise<any> {
     try {
-      console.log('Entering logout route');
-      const authenticatedUserId = req.user.userId; // Adjust based on your payload structure
+      const { token } = body;
 
-      // Extract patient ID from the token
-      const patientIdInToken = this.patientService.extractPatientIdFromToken(req.headers.authorization);
+      // Validate the token
+      const isValidToken = await this.patientService.validateToken(token, 'secret');
 
-      // Check if the user ID in the token matches the authenticated user ID
-      if (authenticatedUserId !== patientIdInToken) {
-        throw new HttpException('Unauthorized. Token does not correspond to the authenticated patient.', HttpStatus.UNAUTHORIZED);
+      if (!isValidToken) {
+        throw new HttpException('Invalid token.', HttpStatus.UNAUTHORIZED);
       }
 
       // Optionally, you might want to perform some additional validation here
 
-      // Log the patient out (add your logout logic here)
-
       // Return success response
       return res.status(HttpStatus.OK).json({ status: true, message: 'Logout successful' });
     } catch (error) {
-      console.error('Error during logout:', error); // Log the error for debugging
-      throw new HttpException('Error during logout.', HttpStatus.INTERNAL_SERVER_ERROR);
+      console.error('Error:', error);
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new HttpException('Error during logout.', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
   }
   

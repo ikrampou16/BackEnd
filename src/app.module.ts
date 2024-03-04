@@ -1,24 +1,19 @@
-// app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Admin } from './entities/admin';
 import { Doctor } from './entities/doctor';
 import { Patient } from './entities/patient';
-import { AdminController } from './controllers/admin.controller';
-import { DoctorController } from './controllers/doctor.controller';
-import { PatientController } from './controllers/patient.controller';
-import { AdminService } from './services/admin.service';
-import { DoctorService } from './services/doctor.service';
-import { PatientService } from './services/patient.service';
-import { PassportModule } from '@nestjs/passport';
-import { AuthModule } from './auth/auth.module'; 
-import { MyConfigModule } from './config/config.module';
-// Import your authentication module
+import { AdminController } from './Controllers/admin.controller';
+import { DoctorController } from './Controllers/doctor.controller';
+import { PatientController } from './Controllers/patient.controller';
+import { AdminService } from './Services/admin.service';
+import { DoctorService } from './Services/doctor.service';
+import { PatientService } from './Services/patient.service';
+
+import { AdminModule } from './Modules/admin.module';
 
 @Module({
   imports: [
-    MyConfigModule, 
-    PassportModule.register({ defaultStrategy: 'jwt' }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -30,7 +25,6 @@ import { MyConfigModule } from './config/config.module';
       synchronize: true, // Only use this option in development mode
     }),
     TypeOrmModule.forFeature([Admin, Doctor, Patient]),
-    AuthModule, // Include your AuthModule
   ],
   controllers: [AdminController, DoctorController, PatientController],
   providers: [AdminService, DoctorService, PatientService],

@@ -19,7 +19,7 @@ import { AdminModule } from './Modules/admin.module';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'ikramikram',
+      password: 'raniasekhara',
       database: 'DKA',
       entities: [Admin, Doctor, Patient],
       synchronize: true, // Only use this option in development mode

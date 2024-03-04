@@ -32,6 +32,11 @@ export class Doctor {
   @Column()
   adress: string ;
 
+  toJSON() {
+    const { password, ...rest } = this;
+    return rest;
+}
+
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {

@@ -1,5 +1,7 @@
-import { Controller, Post, Body, Res, HttpStatus, HttpException , Get } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, HttpException, Get, Req, UseGuards } from '@nestjs/common';
 import { PatientService } from '../Services/patient.service';
+import { AuthGuard } from '@nestjs/passport';
+import { ExtractJwt } from 'passport-jwt';
 
 @Controller('patients')
 export class PatientController {
@@ -71,5 +73,30 @@ export class PatientController {
       }
     }
   }
+  @Post('logout')
+  async logout(@Body() body: any, @Res() res): Promise<any> {
+    try {
+      const { token } = body;
 
+      // Validate the token
+      const isValidToken = await this.patientService.validateToken(token, 'secret');
+
+      if (!isValidToken) {
+        throw new HttpException('Invalid token.', HttpStatus.UNAUTHORIZED);
+      }
+
+      // Optionally, you might want to perform some additional validation here
+
+      // Return success response
+      return res.status(HttpStatus.OK).json({ status: true, message: 'Logout successful' });
+    } catch (error) {
+      console.error('Error:', error);
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new HttpException('Error during logout.', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
+  
 }

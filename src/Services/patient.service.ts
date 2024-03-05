@@ -1,10 +1,8 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import * as jwt from 'jsonwebtoken';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Patient } from '../Entities/patient'
-import * as bcrypt from 'bcryptjs';
-
+import * as jwt from 'jsonwebtoken';
+import { Patient } from '../Entities/patient';
 
 @Injectable()
 export class PatientService {
@@ -60,20 +58,29 @@ export class PatientService {
   }
 
   async comparePassword(email: string, password: string): Promise<boolean> {
-    // Retrieve the admin entity from the database based on the provided email
+    try {
+      const patient = await this.patientRepository.findOne({ where: { email } });
 
-    const patient = await this.patientRepository.findOne({ where: { email } });
-    
-    // If admin doesn't exist or password doesn't match, return false
-    if (!patient|| patient.password !== password) {
-      return false;
+      if (!patient || !(await patient.comparePassword(password))) {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error during password comparison:', error);
+      throw new HttpException('Error during password comparison.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    // Password matches
-    return true;
   }
 
-
-
+  async validateToken(token: string, JWTSecret_Key: string): Promise<boolean> {
+    try {
+      // Verify the token using the provided secret key
+      jwt.verify(token, JWTSecret_Key);
+      return true;
+    } catch (error) {
+      // Token is invalid
+      return false;
+    }
+  }
 
 }

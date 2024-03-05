@@ -69,4 +69,14 @@ export class DoctorService {
     // Password matches
     return true;
   }
+  async validateToken(token: string, JWTSecret_Key: string): Promise<boolean> {
+    try {
+      // Verify the token using the provided secret key
+      jwt.verify(token, JWTSecret_Key);
+      return true;
+    } catch (error) {
+      // Token is invalid
+      return false;
+    }
+  }
 }

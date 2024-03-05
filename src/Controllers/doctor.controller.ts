@@ -37,7 +37,7 @@ export class DoctorController {
     }
   }
 
-  @Get('login')
+  @Post('login')
   async loginDoctor(@Body() body: any, @Res() res): Promise<any> {
     try {
       const { email, password } = body;
@@ -62,7 +62,7 @@ export class DoctorController {
       const tokenData = { _id: doctor.id_doctor, email: doctor.email };
       const token = await this.doctorService.generateAccessToken(tokenData, "secret", "1h");
 
-      res.status(HttpStatus.OK).json({ status: true, success: "Connected!", token, last_name: doctor.last_name });
+      res.status(HttpStatus.OK).json({ status: true, success: "Connected!", token, data :doctor });
     } catch (error) {
       console.error('Error:', error);
       if (error instanceof HttpException) {
